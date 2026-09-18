@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX キャラクターBAN確認ツール</title>
+    <style>
+        /* 全体の背景やフォントのデザイン */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
 
+        h1 {
+            color: #ff4e4e;
+            font-size: 24px;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* リセットボタンのスタイル */
+        .btn-container {
+            margin-bottom: 30px;
+        }
+
+        .reset-button {
+            background-color: #ff4e4e;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .reset-button:hover {
+            background-color: #e03d3d;
+        }
+
+        .reset-button:active {
+            transform: scale(0.95);
+        }
+
+        /* クラスごとのグループ */
+        .class-section {
+            margin-bottom: 30px;
+        }
+
+        .class-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 12px;
+            padding: 6px 15px;
+            display: inline-block;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* 各クラスの下線カラー（添付画像のイメージ） */
+        .assault { border-bottom: 3px solid #ff4e4e; color: #ff4e4e; }
+        .skirmisher { border-bottom: 3px solid #ffb84d; color: #ffb84d; }
+        .recon { border-bottom: 3px solid #b84dff; color: #b84dff; }
+        .support { border-bottom: 3px solid #4da6ff; color: #4da6ff; }
+        .controller { border-bottom: 3px solid #4dff88; color: #4dff88; }
+
+        /* キャラクターを並べる横並びの枠 */
+        .character-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* キャラクターカードの基本設定 */
+        .character-card {
+            background-color: #222222;
+            border: 2px solid #444444;
+            border-radius: 4px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+
+        /* マウスを載せたときの動き */
+        .character-card:hover {
+            border-color: #ffffff;
+            transform: translateY(-3px);
+            background-color: #2a2a2a;
+        }
+
+        /* BAN（灰色）状態のデザイン */
+        .character-card.banned {
+            background-color: #1a1a1a !important;
+            border-color: #252525 !important;
+            color: #555555 !important;
+            opacity: 0.3;
+            transform: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>APEX LEGENDS BAN/PICK BOARD</h1>
+    <div class="subtitle">キャラクターをクリックするとBAN（灰色化）/ 解除 できます</div>
+
+    <!-- リセットボタン設置エリア -->
+    <div class="btn-container">
+        <button class="reset-button" onclick="resetAllBans()">すべてのBANを解除（リセット）</button>
+    </div>
+
+    <!-- アサルト -->
+    <div class="class-section">
+        <div class="class-title assault">■ アサルト</div>
+        <div class="character-grid">
+            <div class="character-card" onclick="toggleBan(this)">バンガロール</div>
+            <div class="character-card" onclick="toggleBan(this)">ヒューズ</div>
+            <div class="character-card" onclick="toggleBan(this)">アッシュ</div>
+            <div class="character-card" onclick="toggleBan(this)">マッドマギー</div>
+            <div class="character-card" onclick="toggleBan(this)">バリスティック</div>
+        </div>
+    </div>
+
+    <!-- スカーミッシャー -->
+    <div class="class-section">
+        <div class="class-title skirmisher">■ スカーミッシャー</div>
+        <div class="character-grid">
+            <div class="character-card" onclick="toggleBan(this)">パスファインダー</div>
+            <div class="character-card" onclick="toggleBan(this)">レイス</div>
+            <div class="character-card" onclick="toggleBan(this)">オクタン</div>
+            <div class="character-card" onclick="toggleBan(this)">ホライゾン</div>
+            <div class="character-card" onclick="toggleBan(this)">ヴァルキリー</div>
+            <div class="character-card" onclick="toggleBan(this)">レヴナント</div>
+            <div class="character-card" onclick="toggleBan(this)">オルター</div>
+        </div>
+    </div>
+
+    <!-- リコン -->
+    <div class="class-section">
+        <div class="class-title recon">■ リコン</div>
+        <div class="character-grid">
+            <div class="character-card" onclick="toggleBan(this)">ブラッドハウンド</div>
+            <div class="character-card" onclick="toggleBan(this)">クリプト</div>
+            <div class="character-card" onclick="toggleBan(this)">シア</div>
+            <div class="character-card" onclick="toggleBan(this)">ヴァンテージ</div>
+        </div>
+    </div>
+
+    <!-- サポート -->
+    <div class="class-section">
+        <div class="class-title support">■ サポート</div>
+        <div class="character-grid">
+            <div class="character-card" onclick="toggleBan(this)">ジブラルタル</div>
+            <div class="character-card" onclick="toggleBan(this)">ライフライン</div>
+            <div class="character-card" onclick="toggleBan(this)">ローバ</div>
+            <div class="character-card" onclick="toggleBan(this)">ニューキャッスル</div>
+            <div class="character-card" onclick="toggleBan(this)">コンジット</div>
+        </div>
+    </div>
+
+    <!-- コントローラー -->
+    <div class="class-section">
+        <div class="class-title controller">■ コントローラー</div>
+        <div class="character-grid">
+            <div class="character-card" onclick="toggleBan(this)">コースティック</div>
+            <div class="character-card" onclick="toggleBan(this)">ワットソン</div>
+            <div class="character-card" onclick="toggleBan(this)">ランパート</div>
+            <div class="character-card" onclick="toggleBan(this)">カタリスト</div>
+        </div>
+    </div>
+
+    <script>
+        // 単体のキャラクターのBAN状態を切り替える関数
+        function toggleBan(element) {
+            element.classList.toggle('banned');
+        }
+
+        // すべてのキャラクターのBAN（bannedクラス）を一括解除する関数
+        function resetAllBans() {
+            // 'banned' クラスがついている要素をすべて探す
+            const bannedCards = document.querySelectorAll('.character-card.banned');
+            
+            // 見つかった要素から一斉に 'banned' クラスを削除する
+            bannedCards.forEach(function(card) {
+                card.classList.remove('banned');
+            });
+        }
+    </script>
+</body>
+</html>
