@@ -17,8 +17,22 @@
         h1 {
             color: #ff4e4e;
             font-size: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             letter-spacing: 2px;
+        }
+
+        /* --- BAN数カウンターのスタイル --- */
+        .ban-counter {
+            font-size: 18px;
+            font-weight: bold;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        #counter-number {
+            color: #ff4e4e; /* 数字の部分だけ目立つ赤色に */
+            font-size: 24px;
+            margin: 0 4px;
         }
 
         .reset-button {
@@ -132,6 +146,12 @@
 <body>
 
     <h1>APEX LEGENDS BAN/PICK BOARD</h1>
+    
+    <!-- 追加：現在のBAN数表示エリア -->
+    <div class="ban-counter">
+        現在のBAN数:<span id="counter-number">0</span>人
+    </div>
+
     <button class="reset-button" onclick="resetAllBans()">すべての BAN をリセット（RESET）</button>
 
     <!-- ゲーム画面全体のコンテナ -->
@@ -142,12 +162,11 @@
             <!-- アサルト -->
             <div class="class-section">
                 <div class="character-grid">
-                    <!-- 画像にする場合は、ここの「マッドマギー」等を <img src="URL"> に書き換えます -->
-                    <div class="character-card" onclick="toggleBan(this)">マギー</div>
-                    <div class="character-card" onclick="toggleBan(this)">アッシュ</div>
-                    <div class="character-card" onclick="toggleBan(this)">ヒューズ</div>
-                    <div class="character-card" onclick="toggleBan(this)">バンガ</div>
-                    <div class="character-card" onclick="toggleBan(this)">バリス</div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="バンガロール.png" alt="バンガロール"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="レブナント.png" alt="レブナント"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ヒューズ.png" alt="ヒューズ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="マッドマギー.png" alt="マッドマギー"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="バリスティック.png" alt="バリスティック"></div>
                 </div>
                 <div class="class-title assault">▲ アサルト</div>
             </div>
@@ -155,13 +174,13 @@
             <!-- スカーミッシャー -->
             <div class="class-section">
                 <div class="character-grid">
-                    <div class="character-card" onclick="toggleBan(this)">パス</div>
-                    <div class="character-card" onclick="toggleBan(this)">レイス</div>
-                    <div class="character-card" onclick="toggleBan(this)">オクタン</div>
-                    <div class="character-card" onclick="toggleBan(this)">ホライ</div>
-                    <div class="character-card" onclick="toggleBan(this)">ヴァル</div>
-                    <div class="character-card" onclick="toggleBan(this)">レヴ</div>
-                    <div class="character-card" onclick="toggleBan(this)">オルタ</div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="パスファインダー.png" alt="パスファインダー"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="レイス.png" alt="レイス"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="オクタン.png" alt="オクタン"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ホライゾン.png" alt="ホライゾン"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="アッシュ.png" alt="アッシュ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="オルター.png" alt="オルター"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="アクセル.png" alt="アクセル"></div>
                 </div>
                 <div class="class-title skirmisher">▼ スカーミッシャー</div>
             </div>
@@ -172,10 +191,12 @@
             <!-- リコン -->
             <div class="class-section">
                 <div class="character-grid">
-                    <div class="character-card" onclick="toggleBan(this)">ブラハ</div>
-                    <div class="character-card" onclick="toggleBan(this)">クリプト</div>
-                    <div class="character-card" onclick="toggleBan(this)">シア</div>
-                    <div class="character-card" onclick="toggleBan(this)">ヴァンテ</div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ブラッドハウンド.png" alt="ブラハ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="クリプト.png" alt="クリプト"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ヴァルキリー.png" alt="ヴァルキリ―"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="シア.png" alt="シア"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ヴァンテージ.png" alt="ヴァンテージ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="スパロー.png" alt="スパロー"></div>
                 </div>
                 <div class="class-title recon">👁 リコン</div>
             </div>
@@ -183,11 +204,12 @@
             <!-- サポート -->
             <div class="class-section">
                 <div class="character-grid">
-                    <div class="character-card" onclick="toggleBan(this)">ジブ</div>
-                    <div class="character-card" onclick="toggleBan(this)">ライフ</div>
-                    <div class="character-card" onclick="toggleBan(this)">ローバ</div>
-                    <div class="character-card" onclick="toggleBan(this)">ニュー</div>
-                    <div class="character-card" onclick="toggleBan(this)">コンジ</div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ジブラルタル.png" alt="ジブ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ライフライン.png" alt="ライフライン"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ミラージュ.png" alt="ミラージュ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ローバ.png" alt="ローバ"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ニューキャッスル.png" alt="ニューキャッスル"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="コンジット.png" alt="コンジット"></div>
                 </div>
                 <div class="class-title support">🛡 サポート</div>
             </div>
@@ -195,10 +217,10 @@
             <!-- コントローラー -->
             <div class="class-section">
                 <div class="character-grid">
-                    <div class="character-card" onclick="toggleBan(this)">コース</div>
-                    <div class="character-card" onclick="toggleBan(this)">ワット</div>
-                    <div class="character-card" onclick="toggleBan(this)">ランパ</div>
-                    <div class="character-card" onclick="toggleBan(this)">カタ</div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="コースティック.png" alt="コースティック"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ワットソン.png" alt="ワットソン"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="ランパート.png" alt="ランパート"></div>
+                    <div class="character-card" onclick="toggleBan(this)"><img src="カタリスト.png" alt="カタリスト"></div>
                 </div>
                 <div class="class-title controller">☖ コントローラー</div>
             </div>
@@ -207,8 +229,17 @@
     </div>
 
     <script>
+        // BAN数をカウントして画面に反映する関数
+        function updateBanCount() {
+            // 現在 'banned' クラスがついているカードの数を数える
+            const bannedCount = document.querySelectorAll('.character-card.banned').length;
+            // 画面の数字を書き換える
+            document.getElementById('counter-number').textContent = bannedCount;
+        }
+
         function toggleBan(element) {
             element.classList.toggle('banned');
+            updateBanCount(); // クリックするたびにカウントを更新
         }
 
         function resetAllBans() {
@@ -216,6 +247,7 @@
             bannedCards.forEach(function(card) {
                 card.classList.remove('banned');
             });
+            updateBanCount(); // リセット時もカウントを0に更新
         }
     </script>
 </body>
