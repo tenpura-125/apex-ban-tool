@@ -141,13 +141,23 @@
             border-color: #222222 !important;
             filter: grayscale(100%) brightness(30%); /* 画像ごと完全に暗い灰色にします */
         }
+
+        /* --- 免責事項フッターのスタイル --- */
+        .footer {
+            margin-top: 60px;
+            padding: 20px 0;
+            border-top: 1px solid #222222;
+            font-size: 11px;
+            color: #666666;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
     <h1>APEX LEGENDS BAN/PICK BOARD</h1>
     
-    <!-- 追加：現在のBAN数表示エリア -->
+    <!-- 現在のBAN数表示エリア -->
     <div class="ban-counter">
         現在のBAN数:<span id="counter-number">0</span>人
     </div>
@@ -228,18 +238,21 @@
 
     </div>
 
+    <!-- 免責事項エリア -->
+    <footer class="footer">
+        <p>免責事項：本サイトは個人によって作成された非公式のファンサイト（ツール）であり、Electronic Arts社およびRespawn Entertainment社とは一切関係がありません。<br>
+        サイト内で使用されているゲーム画像の著作権および商標権は、それぞれの権利所有者に帰属します。</p>
+    </footer>
+
     <script>
-        // BAN数をカウントして画面に反映する関数
         function updateBanCount() {
-            // 現在 'banned' クラスがついているカードの数を数える
             const bannedCount = document.querySelectorAll('.character-card.banned').length;
-            // 画面の数字を書き換える
             document.getElementById('counter-number').textContent = bannedCount;
         }
 
         function toggleBan(element) {
             element.classList.toggle('banned');
-            updateBanCount(); // クリックするたびにカウントを更新
+            updateBanCount();
         }
 
         function resetAllBans() {
@@ -247,7 +260,7 @@
             bannedCards.forEach(function(card) {
                 card.classList.remove('banned');
             });
-            updateBanCount(); // リセット時もカウントを0に更新
+            updateBanCount();
         }
     </script>
 </body>
