@@ -151,6 +151,56 @@
             color: #666666;
             line-height: 1.6;
         }
+        
+         /* ① タイトルを太字にして目立たせ、上の要素との距離を離す */
+        .ban-history-title {
+            font-size: 18px; /* 15pxから拡大 */
+            font-weight: 900; /* より太字に */
+            color: #ff4e4e;
+            margin-top: 20px; /* 上との距離を確保 */
+            margin-bottom: 25px; /* 下（画像）との距離を確保 */
+            letter-spacing: 2px;
+        }
+
+        /* ③ BAN履歴内の画像サイズを、上部のキャラ選択画像と同じサイズ（55px × 70px）にする */
+        .history-item {
+            position: relative;
+            width: 55px;  /* 55pxに固定 */
+            height: 70px; /* 70pxに固定 */
+            background-color: #222;
+            border: 2px solid #555; /* 上部と同じ2px幅に */
+            border-radius: 4px;
+            overflow: hidden;
+        }
+                /* ② 左から右に並べ、10人ごとに1段下げる（自動折り返し） */
+        .ban-history-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            min-height: 90px;
+            align-items: center;
+            
+            /* カード10枚＋隙間(gap)がぴったり収まる横幅に制限 */
+            max-width: 670px; 
+            margin: 0 auto; /* 中央寄せ */
+        }
+        
+           /* BANされた順番の数字バッジ（画像の上に重ねる設定に変更） */
+        .history-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background-color: rgba(255, 78, 78, 0.9); /* 赤色の背景 */
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 5px;
+            border-radius: 3px;
+            z-index: 2; /* 画像よりも手前に表示する */
+            line-height: 1; /* 縦幅をコンパクトに */
+        }
+        
     </style>
 </head>
 <body>
@@ -238,6 +288,14 @@
 
     </div>
 
+   <!-- BANされた順番を表示するエリア -->
+    <div class="ban-history-section">
+        <div class="ban-history-title">▼ BANされた順番（BAN HISTORY）</div>
+        <div class="ban-history-grid" id="ban-history-grid">
+            <span class="empty-history-text">まだキャラクターはBANされていません</span>
+        </div>
+    </div>
+
     <!-- 免責事項エリア -->
     <footer class="footer">
         <p>免責事項：本サイトは個人によって作成された非公式のファンサイト（ツール）であり、Electronic Arts社およびRespawn Entertainment社とは一切関係がありません。<br>
@@ -245,23 +303,80 @@
     </footer>
 
     <script>
-        function updateBanCount() {
-            const bannedCount = document.querySelectorAll('.character-card.banned').length;
-            document.getElementById('counter-number').textContent = bannedCount;
+  // BANされたレジェンドを順番に記憶する配列
+    let banOrderList = [];
+
+    function toggleBan(element) {
+        const imgElement = element.querySelector('img');
+        const legendSrc = imgElement ? imgElement.getAttribute('src') : null;
+        const legendAlt = imgElement ? imgElement.getAttribute('alt') : element.innerText;
+
+        element.classList.toggle('banned');
+
+        if (element.classList.contains('banned')) {
+            // BANされた場合：配列の最後に追加
+            banOrderList.push({ src: legendSrc, alt: legendAlt });
+        } else {
+            // 解除された場合：配列から該当キャラを探して削除（自動で数字が詰まる）
+            banOrderList = banOrderList.filter(item => item.alt !== legendAlt);
         }
 
-        function toggleBan(element) {
-            element.classList.toggle('banned');
-            updateBanCount();
+        // 画面表示を更新
+        updateBanDisplay();
+    }
+
+    // カウンターと履歴を更新する関数
+    function updateBanDisplay() {
+        // 1. カウンターの更新
+        document.getElementById('counter-number').textContent = banOrderList.length;
+
+        // 2. 履歴エリアの更新
+        const historyGrid = document.getElementById('ban-history-grid');
+        historyGrid.innerHTML = ''; 
+
+        if (banOrderList.length === 0) {
+            historyGrid.innerHTML = '<span class="empty-history-text">まだキャラクターはBANされていません</span>';
+            return;
         }
 
-        function resetAllBans() {
-            const bannedCards = document.querySelectorAll('.character-card.banned');
-            bannedCards.forEach(function(card) {
-                card.classList.remove('banned');
-            });
-            updateBanCount();
-        }
+        // 配列の順序通りに履歴カードを作成
+        banOrderList.forEach((legend, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'history-item';
+
+            // 順番を示す数字バッジ
+            const numberBadge = document.createElement('div');
+            numberBadge.className = 'history-number';
+            numberBadge.textContent = index + 1;
+            itemDiv.appendChild(numberBadge);
+
+            // 画像またはテキストの埋め込み
+            if (legend.src) {
+                const img = document.createElement('img');
+                img.src = legend.src;
+                img.alt = legend.alt;
+                itemDiv.appendChild(img);
+            } else {
+                itemDiv.innerText = legend.alt;
+                itemDiv.style.display = 'flex';
+                itemDiv.style.alignItems = 'center';
+                itemDiv.style.justifyContent = 'center';
+                itemDiv.style.fontSize = '10px';
+            }
+
+            historyGrid.appendChild(itemDiv);
+        });
+    }
+
+    function resetAllBans() {
+        const bannedCards = document.querySelectorAll('.character-card.banned');
+        bannedCards.forEach(function(card) {
+            card.classList.remove('banned');
+        });
+        
+        banOrderList = [];
+        updateBanDisplay();
+    }
     </script>
 </body>
 </html>
