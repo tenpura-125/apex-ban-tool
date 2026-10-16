@@ -213,7 +213,7 @@
         現在のBAN数:<span id="counter-number">0</span>人
     </div>
 
-    <button class="reset-button" onclick="resetAllBans()">すべての BAN をリセット（RESET）</button>
+    <button class="reset-button" id="reset-btn">すべての BAN をリセット（RESET）</button>
 
     <!-- ゲーム画面全体のコンテナ -->
     <div class="game-screen">
@@ -309,15 +309,23 @@
 
     // ページ（ウェブ・Discord問わず）が読み込まれたら一度だけ実行する
     document.addEventListener("DOMContentLoaded", function() {
-        // すべてのキャラクターカードにクリックのスイッチを付与
+        // 1. すべてのキャラクターカードにクリックのスイッチを付与
         const cards = document.querySelectorAll('.character-card');
         cards.forEach(function(card) {
             card.addEventListener('click', function() {
-                toggleBan(card); // 正しく自分自身のカードを関数に渡す
+                toggleBan(card);
             });
         });
-    });
 
+        // 2. 【追加】リセットボタンにもDiscord対策のクリックスイッチを直接付与
+        const resetBtn = document.getElementById('reset-btn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function() {
+                resetAllBans(); // ボタンが押されたらリセット関数を実行
+            });
+        }
+    });
+    
     function toggleBan(element) {
         const imgElement = element.querySelector('img');
         const legendSrc = imgElement ? imgElement.getAttribute('src') : null;
