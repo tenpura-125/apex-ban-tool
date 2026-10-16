@@ -304,8 +304,19 @@
     </footer>
 
     <script>
-  // BANされたレジェンドを順番に記憶する配列
+    // BANされたレジェンドを順番に記憶する配列
     let banOrderList = [];
+
+    // 【Discord対策】ページが読み込まれたら、すべてのカードにクリックイベントを直接付与する
+    document.addEventListener("DOMContentLoaded", function() {
+        const cards = document.querySelectorAll('.character-card');
+        cards.forEach(function(card) {
+            // HTMLのonclickに頼らず、JavaScript側で直接クリックを監視します
+            card.addEventListener('click', function() {
+                toggleBan(this);
+            });
+        });
+    });
 
     function toggleBan(element) {
         const imgElement = element.querySelector('img');
@@ -315,23 +326,17 @@
         element.classList.toggle('banned');
 
         if (element.classList.contains('banned')) {
-            // BANされた場合：配列の最後に追加
             banOrderList.push({ src: legendSrc, alt: legendAlt });
         } else {
-            // 解除された場合：配列から該当キャラを探して削除（自動で数字が詰まる）
             banOrderList = banOrderList.filter(item => item.alt !== legendAlt);
         }
 
-        // 画面表示を更新
         updateBanDisplay();
     }
 
-    // カウンターと履歴を更新する関数
     function updateBanDisplay() {
-        // 1. カウンターの更新
         document.getElementById('counter-number').textContent = banOrderList.length;
 
-        // 2. 履歴エリアの更新
         const historyGrid = document.getElementById('ban-history-grid');
         historyGrid.innerHTML = ''; 
 
@@ -340,18 +345,15 @@
             return;
         }
 
-        // 配列の順序通りに履歴カードを作成
         banOrderList.forEach((legend, index) => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'history-item';
 
-            // 順番を示す数字バッジ
             const numberBadge = document.createElement('div');
             numberBadge.className = 'history-number';
             numberBadge.textContent = index + 1;
             itemDiv.appendChild(numberBadge);
 
-            // 画像またはテキストの埋め込み
             if (legend.src) {
                 const img = document.createElement('img');
                 img.src = legend.src;
